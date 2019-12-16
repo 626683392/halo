@@ -1,6 +1,7 @@
 package run.halo.app.model.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -13,7 +14,8 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "post_categories")
-@Data
+@Getter
+@Setter
 @ToString(callSuper = true)
 public class PostCategory extends BaseEntity {
 

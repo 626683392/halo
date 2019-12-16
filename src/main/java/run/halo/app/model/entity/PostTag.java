@@ -1,7 +1,7 @@
 package run.halo.app.model.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -13,7 +13,8 @@ import java.util.Objects;
  * @author ryanwang
  * @date : 2019-03-12
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "post_tags")
 @ToString(callSuper = true)
