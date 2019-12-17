@@ -34,6 +34,7 @@ configurations {
     }
 }
 
+
 bootJar {
     manifest {
         attributes('Implementation-Title': 'Halo Application')//, 'Implementation-Version': version)
