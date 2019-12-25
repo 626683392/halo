@@ -39,6 +39,7 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @RequestMapping("/api/admin/posts")
 public class PostController {
 
+
     private final PostService postService;
 
     private final StringCacheStore cacheStore;
