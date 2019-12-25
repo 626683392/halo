@@ -22,6 +22,7 @@ import run.halo.app.service.OptionService;
 import run.halo.app.service.PostService;
 
 import javax.validation.Valid;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -138,7 +139,7 @@ public class PostController {
     }
 
     @GetMapping("preview/{postId:\\d+}")
-    public String preview(@PathVariable("postId") Integer postId) {
+    public String preview(@PathVariable("postId") Integer postId) throws Exception {
         Post post = postService.getById(postId);
 
         String token = IdUtil.simpleUUID();
@@ -147,6 +148,7 @@ public class PostController {
         cacheStore.putAny("preview-post-token-" + postId, token, 10, TimeUnit.MINUTES);
 
         // build preview post url and return
-        return String.format("%s/archives/%s?preview=true&token=%s", optionService.getBlogBaseUrl(), post.getUrl(), token);
+        return URLEncoder.encode(String.format("%s/archives/%s?preview=true&token=%s",
+                optionService.getBlogBaseUrl(), post.getUrl(), token), "UTF-8");
     }
 }

@@ -17,6 +17,7 @@ import run.halo.app.service.OptionService;
 import run.halo.app.service.SheetService;
 
 import javax.validation.Valid;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -111,7 +112,7 @@ public class SheetController {
     }
 
     @GetMapping("preview/{sheetId:\\d+}")
-    public String preview(@PathVariable("sheetId") Integer sheetId) {
+    public String preview(@PathVariable("sheetId") Integer sheetId) throws Exception{
         Sheet sheet = sheetService.getById(sheetId);
 
         String token = IdUtil.simpleUUID();
@@ -120,6 +121,7 @@ public class SheetController {
         cacheStore.putAny("preview-sheet-token-" + sheetId, token, 10, TimeUnit.MINUTES);
 
         // build preview post url and return
-        return String.format("%s/s/%s?preview=true&token=%s", optionService.getBlogBaseUrl(), sheet.getUrl(), token);
+        return URLEncoder.encode(String.format("%s/s/%s?preview=true&token=%s",
+                optionService.getBlogBaseUrl(), sheet.getUrl(), token), "UTF-8");
     }
 }
