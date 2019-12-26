@@ -112,7 +112,7 @@ public class SheetController {
     }
 
     @GetMapping("preview/{sheetId:\\d+}")
-    public String preview(@PathVariable("sheetId") Integer sheetId) throws Exception{
+    public String preview(@PathVariable("sheetId") Integer sheetId) throws Exception {
         Sheet sheet = sheetService.getById(sheetId);
 
         String token = IdUtil.simpleUUID();
@@ -121,7 +121,7 @@ public class SheetController {
         cacheStore.putAny("preview-sheet-token-" + sheetId, token, 10, TimeUnit.MINUTES);
 
         // build preview post url and return
-        return URLEncoder.encode(String.format("%s/s/%s?preview=true&token=%s",
-                optionService.getBlogBaseUrl(), sheet.getUrl(), token), "UTF-8");
+        return String.format("%s/s/%s?preview=true&token=%s",
+                optionService.getBlogBaseUrl(), URLEncoder.encode(sheet.getUrl(), "UTF-8"), token);
     }
 }

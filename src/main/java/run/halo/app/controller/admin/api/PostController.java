@@ -149,7 +149,7 @@ public class PostController {
         cacheStore.putAny("preview-post-token-" + postId, token, 10, TimeUnit.MINUTES);
 
         // build preview post url and return
-        return URLEncoder.encode(String.format("%s/archives/%s?preview=true&token=%s",
-                optionService.getBlogBaseUrl(), post.getUrl(), token), "UTF-8");
+        return String.format("%s/archives/%s?preview=true&token=%s",
+                optionService.getBlogBaseUrl(), URLEncoder.encode(post.getUrl(), "UTF-8"), token);
     }
 }

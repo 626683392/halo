@@ -183,7 +183,7 @@ public class ContentArchiveController {
             throw new ForbiddenException("没有查询到该文章信息");
         }
 
-        model.addAttribute("url", URLEncoder.encode(url, "UTF-8"));
+        model.addAttribute("url", post.getUrl());
         return "common/template/post_password";
     }
 
@@ -200,12 +200,12 @@ public class ContentArchiveController {
             String token = IdUtil.simpleUUID();
             cacheStore.putAny(token, token, 10, TimeUnit.SECONDS);
 
-            String redirect = URLEncoder.encode(String.format("%s/archives/%s?intimate=true&token=%s",
-                    optionService.getBlogBaseUrl(), post.getUrl(), token), "UTF-8");
+            String redirect = String.format("%s/archives/%s?intimate=true&token=%s",
+                    optionService.getBlogBaseUrl(), URLEncoder.encode(post.getUrl(), "UTF-8"), token);
             return "redirect:" + redirect;
         } else {
-            String redirect = URLEncoder.encode(String.format("%s/archives/%s/password",
-                    optionService.getBlogBaseUrl(), post.getUrl()), "UTF-8");
+            String redirect = String.format("%s/archives/%s/password",
+                    optionService.getBlogBaseUrl(), URLEncoder.encode(post.getUrl(), "UTF-8"));
             return "redirect:" + redirect;
         }
     }
