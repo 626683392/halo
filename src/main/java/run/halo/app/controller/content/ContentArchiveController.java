@@ -24,6 +24,7 @@ import run.halo.app.service.*;
 import run.halo.app.utils.MarkdownUtils;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -176,20 +177,20 @@ public class ContentArchiveController {
 
     @GetMapping(value = "{url}/password")
     public String password(@PathVariable("url") String url,
-                           Model model) {
+                           Model model) throws Exception {
         Post post = postService.getBy(PostStatus.INTIMATE, url);
         if (null == post) {
             throw new ForbiddenException("没有查询到该文章信息");
         }
 
-        model.addAttribute("url", url);
+        model.addAttribute("url", URLEncoder.encode(url, "UTF-8"));
         return "common/template/post_password";
     }
 
     @PostMapping(value = "{url}/password")
     @CacheLock
     public String password(@PathVariable("url") String url,
-                           @RequestParam(value = "password") String password) {
+                           @RequestParam(value = "password") String password) throws Exception {
         Post post = postService.getBy(PostStatus.INTIMATE, url);
         if (null == post) {
             throw new ForbiddenException("没有查询到该文章信息");
@@ -199,10 +200,12 @@ public class ContentArchiveController {
             String token = IdUtil.simpleUUID();
             cacheStore.putAny(token, token, 10, TimeUnit.SECONDS);
 
-            String redirect = String.format("%s/archives/%s?intimate=true&token=%s", optionService.getBlogBaseUrl(), post.getUrl(), token);
+            String redirect = URLEncoder.encode(String.format("%s/archives/%s?intimate=true&token=%s",
+                    optionService.getBlogBaseUrl(), post.getUrl(), token), "UTF-8");
             return "redirect:" + redirect;
         } else {
-            String redirect = String.format("%s/archives/%s/password", optionService.getBlogBaseUrl(), post.getUrl());
+            String redirect = URLEncoder.encode(String.format("%s/archives/%s/password",
+                    optionService.getBlogBaseUrl(), post.getUrl()), "UTF-8");
             return "redirect:" + redirect;
         }
     }
